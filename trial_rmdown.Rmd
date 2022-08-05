@@ -29,3 +29,38 @@ plot(pressure)
 ```
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+
+
+```{r echo=FALSE}
+library(tidyverse)
+library(scales)
+library(tidytext)
+```
+
+```{r echo=FALSE}
+coffee_ratings <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-07-07/coffee_ratings.csv')
+```
+
+```{r}
+coffee_ratings %>% 
+  group_by(country_of_origin) %>% 
+  ggplot(aes(cupper_points, country_of_origin, color = species))+
+  geom_boxplot()+
+  geom_jitter(alpha = 0.5)
+```
+
+
+```{r}
+coffee_longer <- coffee_ratings %>% 
+  pivot_longer(cols = c(aroma:sweetness, "moisture"), names_to = "rating_cat", values_to = "rating")
+```
+
+```{r echo=FALSE}
+library(ggbeeswarm)
+
+coffee_longer %>% 
+  ggplot(aes(rating, rating_cat, color = species))+
+  geom_jitter(alpha = 0.5)
+```
+
